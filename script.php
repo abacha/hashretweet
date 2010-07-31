@@ -1,6 +1,7 @@
 #!/usr/bin/php -q
 <?php
 if (!file_exists("config.php")) die("FILE config.php NOT FOUND");
+if (!file_exists("posts.log")) touch("posts.log");
 include "config.php";
 $dados = json_decode(file_get_contents("http://search.twitter.com/search.json?tag=jera&rpp=100&since_id=".file_get_contents(getcwd().'/last_id')));
 $tweets = array_reverse($dados->results);
@@ -11,7 +12,7 @@ if (!empty($tweets)) {
 			if (in_array($tweet->from_user_id, $white_list))
 				tweet($tweet->from_user, $tweet->text);
 			else if ($tweet->from_user_id != 126665619) 
-				error_log("\n[@{$tweet->from_user}] {$tweet->text} ({$tweet->created_at})", 3, 'posts.log');
+				error_log("\n[{$tweet->created_at}] by @{$tweet->from_user}: {$tweet->text} ", 3, 'posts.log');
 		}
 	}
 	$last = array_pop($tweets);
