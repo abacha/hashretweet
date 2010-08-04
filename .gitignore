@@ -1,4 +1,3 @@
 last_id
-posts.log
-errors.log
-config.php
+lib/config.inc
+tweets.log
